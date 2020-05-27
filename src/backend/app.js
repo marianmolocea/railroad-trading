@@ -78,5 +78,5 @@ setInterval(() => {
 }, 1000 * 5)
 
 
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3002;
 app.listen(port, () => console.log(`App is running on port ${port}!`));

@@ -54,10 +54,10 @@ const compareCandles = (item1, item2) => {
     let totalComparison = totalSizeComparison(item1, item2);
     let areOpposite = areOppositeCandles(item1, item2);
 
-    if(bodyComparison <= 0.10 && areOpposite) {
+    if(bodyComparison <= 0.05 && areOpposite) {
         //console.log('Trade 1', bodyComparison)
         return true
-    } else if(bodyComparison < 0.15 && totalComparison <= 0.10 && areOpposite) {
+    } else if(bodyComparison < 0.081 && totalComparison <= 0.10 && areOpposite) {
         //console.log('Trade 2',bodyComparison, totalComparison)
         return true
     } else {
