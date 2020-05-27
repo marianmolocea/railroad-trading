@@ -1,15 +1,10 @@
 import React from 'react';
-import BrokerAccountInput from '../InputForms/BrokerAccountInput';
-import PerformanceInput from '../InputForms/PerformanceInput';
-import AdminInput from '../InputForms/AdminInput';
+import DashNav from './DashNav/DashNav';
 
 export default function Dashboard() {
-    return (
-        <div className="Dashboard">
-            Hello from Dashboard
-            <BrokerAccountInput />
-            <PerformanceInput />
-            <AdminInput />
-        </div>
-    )
+  return (
+    <div className="Dashboard">
+        <DashNav />
+    </div>
+  );
 }

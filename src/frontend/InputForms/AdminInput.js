@@ -10,7 +10,7 @@ const AdminInput = () => {
         <input
           type="number"
           value=""
-          placeholder="Enter the value.."
+          placeholder="Default value is 0.03"
           defaultValue={0.03}
         />
         <label>
@@ -19,7 +19,7 @@ const AdminInput = () => {
         <input
           type="number"
           value=""
-          placeholder="Enter the value.."
+          placeholder="Default value is 0.1"
           defaultValue={0.1}
         />
         <label>
@@ -28,16 +28,16 @@ const AdminInput = () => {
         <input
           type="number"
           value=""
-          placeholder="Enter the value.."
+          placeholder="Default value is 3"
           defaultValue={3}
         />
         <label>
-          The MIN pips over the MAX candle size to trigger STOP LOSS:
+          The MIN pips over the MAX candle size to trigger the ORDER, TP & SL:
         </label>
         <input
           type="number"
           value=""
-          placeholder="Enter the value.."
+          placeholder="Default value is 2"
           defaultValue={2}
         />
       </div>
