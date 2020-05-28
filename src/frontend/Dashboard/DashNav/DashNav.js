@@ -1,12 +1,18 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState } from 'react';
+import BrokerAccountInput from '../../InputForms/BrokerAccountInput';
+import PerformanceInput from '../../InputForms/PerformanceInput';
+import AdminInput from '../../InputForms/AdminInput';
 
 const DashNav = () => {
+
+  const [component, setComponent] = useState(<BrokerAccountInput />)
+
   return (
     <div className="DashNav">
-      <NavLink to="/dashboard/account-details">Account details</NavLink>
-      <NavLink to="/dashboard/app-settings">App settings</NavLink>
-      <NavLink to="/dashboard/admin-settings">Admin panel</NavLink>
+      <button onClick={() => setComponent(<BrokerAccountInput />)}>Account details</button>
+      <button onClick={() => setComponent(<PerformanceInput />)}>App settings</button>
+      <button onClick={() => setComponent(<AdminInput />)}>Admin panel</button>
+      {component}
     </div>
   );
 };

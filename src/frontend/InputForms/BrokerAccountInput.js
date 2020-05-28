@@ -1,20 +1,25 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 
 const BrokerAccountInput = () => {
   const [apiKey, setApiKey] = useState('');
   const [accountId, setAccountId] = useState('');
   const [accountType, setAccountType] = useState('');
-  const [accountData, setAccountDate] = useState({});
 
-  const saveValues = () => {
-    setAccountDate({
+  const sendData = async () => {
+    let data = {
       apiKey,
       accountId,
       accountType,
-    });
-  };
+    };
+    try {
+      let response = await axios.post('http://localhost:3001/euj', data);
+      console.log(response.status);
 
-  console.log(accountData);
+    } catch (err) {
+      console.log(err)
+    }
+  };
 
   return (
     <div className="BrokerAccountInput">
@@ -50,7 +55,7 @@ const BrokerAccountInput = () => {
           <option value={'live'}>LIVE</option>
         </select>
       </div>
-      <button onClick={() => saveValues()}>Save details</button>
+      <button onClick={() => sendData()}>Save details</button>
     </div>
   );
 };
