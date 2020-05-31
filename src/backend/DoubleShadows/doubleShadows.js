@@ -29,7 +29,7 @@ exports.doubleShadows = () => {
     let minutes = new Date().getMinutes();
     let seconds = new Date().getSeconds();
     let day = new Date().getDay();
-    let hours = new Date().hours();
+    let hours = new Date().getHours();
     if (!(minutes % 15) && seconds > 0 && seconds <= 30 && isWeekday(day, hours)) {
       watchList.forEach(async (currency) => {
         try {
