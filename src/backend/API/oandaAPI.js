@@ -14,8 +14,6 @@ let headers = {
     'Connection': 'Keep-Alive'
 }
 
-let timeFrame = 'M15'
-
 exports.getAccountData = async () => {
     try {
         const response = await axios({
@@ -32,7 +30,7 @@ exports.getAccountData = async () => {
     }
 }
 
-exports.getPriceData = async (currency, count) => {
+exports.getPriceData = async (currency, count, timeFrame) => {
     try {
         const response = await axios({
             method: 'GET',
@@ -115,14 +113,14 @@ exports.createMarketOrder = async (currency, volume, tp, sl) => {
               }
         })
         if(response.status === 201) {
-            console.log(`${currency} - ${volume} - Order successfully placed..`);
             let tradeId = await response.data.orderFillTransaction.tradeOpened.tradeID;
             setStopLose(tradeId, sl);
             setTakeProfit(tradeId, tp);
+            console.log(`${currency} - ${volume} - Order successfully placed..`);
             return response;
         }
     } catch (err) {
-        console.log(err.response.config, err.response.data);
+        console.log(err);
     }
 }
 
@@ -145,7 +143,7 @@ const setStopLose = async (id, sl) => {
             console.log('Stop Loss successfully placed..');
         }
     } catch (err) {
-        console.log(err.response.config, err.response.data);
+        console.log(err);
     }
 }
 
@@ -168,6 +166,6 @@ const setTakeProfit = async (id, tp) => {
             console.log('Take profit successfully placed..');
         }
     } catch (err) {
-        console.log(err.response.config, err.response.data);
+        console.log(err);
     }
 }

@@ -1,14 +1,14 @@
-const audjpy = require('../data/AUD_JPY.json');
-const audusd = require('../data/AUD_USD.json');
-const audcad = require('../data/AUD_CAD.json');
-const eurusd = require('../data/EUR_USD.json');
-const eurjpy = require('../data/EUR_JPY.json');
-const eurgbp = require('../data/EUR_GBP.json');
-const euraud = require('../data/EUR_AUD.json');
-const eurcad = require('../data/EUR_CAD.json');
-const gbpusd = require('../data/GBP_USD.json');
-const usdcad = require('../data/USD_CAD.json');
-const cadjpy = require('../data/CAD_JPY.json');
+const audjpy = require('../../data/AUD_JPY.json');
+const audusd = require('../../data/AUD_USD.json');
+const audcad = require('../../data/AUD_CAD.json');
+const eurusd = require('../../data/EUR_USD.json');
+const eurjpy = require('../../data/EUR_JPY.json');
+const eurgbp = require('../../data/EUR_GBP.json');
+const euraud = require('../../data/EUR_AUD.json');
+const eurcad = require('../../data/EUR_CAD.json');
+const gbpusd = require('../../data/GBP_USD.json');
+const usdcad = require('../../data/USD_CAD.json');
+const cadjpy = require('../../data/CAD_JPY.json');
 
 const pattern = require('../patternRecognition');
 

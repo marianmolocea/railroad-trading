@@ -1,8 +1,10 @@
 const compareCandles = (item1, item2) => {
 
     //Calculate the Candles body size
-    let bodySize = ({mid}) => {
-        return Math.round((+mid.o - +mid.c) * 10000) / 100;
+	let bodySize = ({mid}) => {
+		let decimals = mid.o.split('.')[1].length;
+		let multiplier = decimals === 3 ? 10000 : 1000000
+        return Math.round((+mid.o - +mid.c) * multiplier) / 100;
     }
     
     //Compare the size of the candles
@@ -11,7 +13,7 @@ const compareCandles = (item1, item2) => {
         let previous = Math.abs(bodySize(item1))
         let current = Math.abs(bodySize(item2))
     
-        if(current > 3) {
+        if(Math.min(current, previous) > 3) {
             //Calculate the Candles body average size
             //let bodySizeAverage = () => (previous + current) / 2
             
@@ -20,14 +22,16 @@ const compareCandles = (item1, item2) => {
             
             //Calculate the Percentage
             let diffPercentage = difference /  Math.max(previous, current);
-            return diffPercentage
+            return {diffPercentage, difference}
         } else {
-            return 1
+            return {diffPercentage: 100, difference: 100}
         }
     }
 
-    let totalSize = ({mid}) => {
-        return Math.round((+mid.h - +mid.l) * 10000) / 100;
+	let totalSize = ({mid}) => {
+		let decimals = mid.o.split('.')[1].length;
+		let multiplier = decimals === 3 ? 10000 : 1000000
+        return Math.round((+mid.h - +mid.l) * multiplier) / 100;
     }
     
     let totalSizeComparison = (item1, item2) => {
@@ -42,7 +46,7 @@ const compareCandles = (item1, item2) => {
         
         //Calculate the Percentage
         let diffPercentage = difference / Math.max(current, previous);
-        return diffPercentage
+        return diffPercentage;
     }
 
     let areOppositeCandles = (item1, item2) => {
@@ -50,18 +54,18 @@ const compareCandles = (item1, item2) => {
             (bodySize(item1) > 0 && bodySize(item2) < 0)
     }
 
-    let bodyComparison = bodySizeComparison(item1, item2);
+    let {diffPercentage, difference} = bodySizeComparison(item1, item2);
     let totalComparison = totalSizeComparison(item1, item2);
     let areOpposite = areOppositeCandles(item1, item2);
 
-    if(bodyComparison <= 0.05 && areOpposite) {
+    if((diffPercentage <= 0.05 || difference <= 1) && totalComparison <= 0.30 && areOpposite) {
         //console.log('Trade 1', bodyComparison)
-        return true
-    } else if(bodyComparison < 0.081 && totalComparison <= 0.10 && areOpposite) {
+        return 'trade'
+    } else if((diffPercentage <= 0.08 || difference <= 1.5) && totalComparison <= 0.10 && areOpposite) {
         //console.log('Trade 2',bodyComparison, totalComparison)
-        return true
+        return 'trade'
     } else {
-        return false
+        return `Difference: ${difference} || Diff %: ${diffPercentage} || Total size %: ${totalComparison} || Are Opposite: ${areOpposite}`
     }
 }
 

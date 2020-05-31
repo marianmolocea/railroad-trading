@@ -1,0 +1,43 @@
+const ds = require('./dSPattern');
+const oanda = require('../API/oandaAPI');
+
+
+exports.doubleShadows = () => {
+  let watchList = [
+      'EUR_JPY',
+      'EUR_AUD',
+      'EUR_USD',
+      'AUD_CAD',
+      'AUD_JPY',
+      'AUD_USD',
+      'USD_CAD',
+      'GBP_USD',
+      'EUR_GBP',
+      'EUR_CAD',
+    ];
+  
+  setInterval(() => {
+    let minutes = new Date().getMinutes();
+    let seconds = new Date().getSeconds();
+    if (!(minutes % 15) && seconds > 0 && seconds <= 30) {
+      watchList.forEach(async (currency) => {
+        try {
+          const priceData = await oanda.getPriceData(currency, 16, 'M15');
+          const order = await ds
+            .openOrderIfPattern(
+              currency, 
+              priceData[priceData.length - 2], 
+              priceData[priceData.length - 3], 
+              priceData
+            );
+          if(order) {
+            console.log(`Order successfully executed..`)
+          }
+        } catch (err) {
+          console.log(`Error setInterval: ${err}`)
+        }
+      })
+    }
+  }, 1000 * 30)
+
+}
