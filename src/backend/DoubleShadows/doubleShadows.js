@@ -3,6 +3,15 @@ const oanda = require('../API/oandaAPI');
 
 
 exports.doubleShadows = () => {
+
+  const isWeekday = (day, hours) => {
+    return (day > 0 && day < 5) || (day === 0 && hours > 22) || (day === 5 && hours < 18)
+  }
+
+  const isNight = (hours) => {
+    return (hours >= 22 || hours <= 8)
+  }
+
   let watchList = [
       'EUR_JPY',
       'EUR_AUD',
@@ -19,7 +28,9 @@ exports.doubleShadows = () => {
   setInterval(() => {
     let minutes = new Date().getMinutes();
     let seconds = new Date().getSeconds();
-    if (!(minutes % 15) && seconds > 0 && seconds <= 30) {
+    let day = new Date().getDay();
+    let hours = new Date().hours();
+    if (!(minutes % 15) && seconds > 0 && seconds <= 30 && isWeekday(day, hours)) {
       watchList.forEach(async (currency) => {
         try {
           const priceData = await oanda.getPriceData(currency, 16, 'M15');
