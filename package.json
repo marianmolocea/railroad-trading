@@ -15,8 +15,8 @@
     "react-scripts": "3.4.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "ds": "nodemon ./src/backend/app.js",
+    "start": "nodemon ./src/backend/app.js",
+    "ds": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
