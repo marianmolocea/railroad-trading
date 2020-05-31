@@ -6,7 +6,7 @@ app.use(bodyParser.json());
 
 let baseUrl = 'https://api-fxpractice.oanda.com/v3/accounts/'
 let apiKey = 'a54ac62121bd05632b65207b850648c7-7f97a4217216ddc96299ba0631aa0c2f';
-let accountId = '101-004-14955831-001';
+let accountId = '101-004-14955831-002';
 
 let headers = {
     'Content-Type': 'application/json',
