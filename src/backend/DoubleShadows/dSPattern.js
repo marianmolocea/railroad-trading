@@ -66,7 +66,7 @@ const fibonacciRetracement = (prices) => {
   }, 1000);
   
   return trend === 'down'
-  ? max + Math.abs(max - min) * 0.618
+  ? min + Math.abs(max - min) * 0.618
   : min + Math.abs(max - min) * 0.382;
 };
 
@@ -110,7 +110,7 @@ exports.openOrderIfPattern = async (currency, current, previous, pricesData) => 
           priceFormat(+current.ask.c - convertPips(current.ask.o, tpTarget)) : fibTp;
 
   let sl = comparison === 'buy' ? 
-    priceFormat(+getPeaks(current).low + convertPips(current.ask.o, 2) + spread(current)) : 
+    priceFormat(+getPeaks(current).low - convertPips(current.ask.o, 2) - spread(current)) : 
     priceFormat(+getPeaks(current).high + convertPips(current.ask.o, 2) + spread(current));
 
   try {
