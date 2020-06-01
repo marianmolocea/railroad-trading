@@ -21,6 +21,17 @@ let bodySize = ({mid}) => {
     return Math.round((+mid.o - +mid.c) * multiplier) / 100;
 }
 
+let shadowSize = (item, trend) => {
+  let decimals = item.mid.o.split('.')[1].length;
+  let multiplier = decimals === 3 ? 10000 : 1000000;
+  let bodySize = Math.round((+item.mid.o - +item.mid.c) * multiplier) / 100;
+  if(trend === 'up') {
+    return bodySize < 0 ? Math.round((+item.mid.h - +item.mid.o) * multiplier) / 100 : Math.round((+item.mid.h - +item.mid.c) * multiplier) / 100;
+  } else if (trend === 'down') {
+    return bodySize < 0 ? Math.round((+item.mid.c - +item.mid.l) * multiplier) / 100 : Math.round((+item.mid.o - +item.mid.l) * multiplier) / 100;
+  }
+} 
+
 let areOppositeCandles = (item1, item2) => {
     return (bodySize(item1) < 0 && bodySize(item2) > 0) ||
         (bodySize(item1) > 0 && bodySize(item2) < 0)
@@ -39,8 +50,6 @@ const checkTrendDirection = (prices) => {
         return false;
 }
 };
-
-let pricesData = '';
 
 const fibonacciRetracement = (prices) => {
   let trend = checkTrendDirection(prices);
@@ -61,14 +70,16 @@ const shadowComparison = (current, previous, pricesData) => {
   let trend = checkTrendDirection(pricesData);
 let currentPeack = getPeaks(current);
 let previousPeack = getPeaks(previous);
+let currentShadow = shadowSize(current, trend);
+let previousShadow = shadowSize(previous, trend);
 
 const checkIfEquals = (current, previous) => {
   return Math.abs(+current - +previous) <= convertPips(current, 0.15);
 };
 
-if (checkIfEquals(currentPeack.low, previousPeack.low) && trend === 'down') {
+if (checkIfEquals(currentPeack.low, previousPeack.low) && trend === 'down' && Math.min(currentShadow, previousShadow) >= 1.5) {
   return 'buy';
-} else if (checkIfEquals(currentPeack.high, previousPeack.high) && trend === 'up') {
+} else if (checkIfEquals(currentPeack.high, previousPeack.high) && trend === 'up' && Math.min(currentShadow, previousShadow) >= 1.5) {
   return 'sell';
 } else {
   //console.log(`The Trend is: ${trend} || ` + 
@@ -119,7 +130,6 @@ exports.openOrderIfPattern = async (currency, current, previous, pricesData) => 
             return false
           }
       } else {
-        console.log(`The trend is ${trend} but the pattern is: ${comparison}`);
         return false;
       }
     } else {

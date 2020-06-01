@@ -22,13 +22,14 @@ exports.getAccountData = async () => {
             headers
         })
         if(response.status === 200) {
-            console.log('Successfully connected..')
-            return true;
+            console.log('Data successfully collected..')
+            return response.data;
         }
     } catch (err) {
         console.log(err.response.config, err.response.data);
     }
 }
+
 
 exports.getPriceData = async (currency, count, timeFrame) => {
     try {
