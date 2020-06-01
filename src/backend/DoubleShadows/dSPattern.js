@@ -12,7 +12,7 @@ const convertPips = (price, pips) => {
 
 const priceFormat = (price) => {
     let decimals = price.toString().split('.')[1].length;
-    return decimals > 3 ? price.toFixed(5) : price.toFixed(3);
+    return decimals > 3 ? +price.toFixed(5) : +price.toFixed(3);
 }
 
 const spread = ({ask, bid}) => {
