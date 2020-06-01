@@ -15,22 +15,26 @@ const priceFormat = (price) => {
     return decimals > 3 ? price.toFixed(5) : price.toFixed(3);
 }
 
+const spread = ({ask, bid}) => {
+  return priceFormat(+ask.c - +bid.c);
+}
+
 let bodySize = ({mid}) => {
     let decimals = mid.o.split('.')[1].length;
     let multiplier = decimals === 3 ? 10000 : 1000000
-    return Math.round((+mid.o - +mid.c) * multiplier) / 100;
+    return Math.round((+mid.c - +mid.o) * multiplier) / 100;
 }
 
 let shadowSize = (item, trend) => {
   let decimals = item.mid.o.split('.')[1].length;
   let multiplier = decimals === 3 ? 10000 : 1000000;
-  let bodySize = Math.round((+item.mid.o - +item.mid.c) * multiplier) / 100;
+  let bodySize = Math.round((+item.mid.c - +item.mid.o) * multiplier) / 100;
   if(trend === 'up') {
-    return bodySize < 0 ? Math.round((+item.mid.h - +item.mid.o) * multiplier) / 100 : Math.round((+item.mid.h - +item.mid.c) * multiplier) / 100;
+  return bodySize < 0 ? Math.round((+item.mid.h - +item.mid.o) * multiplier) / 100 : Math.round((+item.mid.h - +item.mid.c) * multiplier) / 100;
   } else if (trend === 'down') {
-    return bodySize < 0 ? Math.round((+item.mid.c - +item.mid.l) * multiplier) / 100 : Math.round((+item.mid.o - +item.mid.l) * multiplier) / 100;
+  return bodySize < 0 ? Math.round((+item.mid.c - +item.mid.l) * multiplier) / 100 : Math.round((+item.mid.o - +item.mid.l) * multiplier) / 100;
   }
-} 
+  } 
 
 let areOppositeCandles = (item1, item2) => {
     return (bodySize(item1) < 0 && bodySize(item2) > 0) ||
@@ -77,9 +81,9 @@ const checkIfEquals = (current, previous) => {
   return Math.abs(+current - +previous) <= convertPips(current, 0.15);
 };
 
-if (checkIfEquals(currentPeack.low, previousPeack.low) && trend === 'down' && Math.min(currentShadow, previousShadow) >= 1.5) {
+if (checkIfEquals(currentPeack.low, previousPeack.low) && trend === 'down' && Math.min(currentShadow, previousShadow) >= 2) {
   return 'buy';
-} else if (checkIfEquals(currentPeack.high, previousPeack.high) && trend === 'up' && Math.min(currentShadow, previousShadow) >= 1.5) {
+} else if (checkIfEquals(currentPeack.high, previousPeack.high) && trend === 'up' && Math.min(currentShadow, previousShadow) >= 2) {
   return 'sell';
 } else {
   //console.log(`The Trend is: ${trend} || ` + 
@@ -106,8 +110,8 @@ exports.openOrderIfPattern = async (currency, current, previous, pricesData) => 
           priceFormat(+current.ask.c - convertPips(current.ask.o, tpTarget)) : fibTp;
 
   let sl = comparison === 'buy' ? 
-    priceFormat(+getPeaks(current).low + convertPips(current.ask.o, 2)) : 
-    priceFormat(+getPeaks(current).high + convertPips(current.ask.o, 2));
+    priceFormat(+getPeaks(current).low + convertPips(current.ask.o, 2) + spread(current)) : 
+    priceFormat(+getPeaks(current).high + convertPips(current.ask.o, 2) + spread(current));
 
   try {
     if (comparison) {
