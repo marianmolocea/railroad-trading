@@ -5,7 +5,7 @@ const oanda = require('../API/oandaAPI');
 exports.doubleShadows = () => {
 
   const isWeekday = (day, hours) => {
-    return (day > 0 && day < 5) || (day === 0 && hours > 22) || (day === 5 && hours < 18)
+    return (day > 0 && day < 5) || (day === 5 && hours < 18)
   }
 
   const isNight = (hours) => {
